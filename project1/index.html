@@ -36,18 +36,26 @@
 </body>
 <script>
 
+    var audioOpenButton = true;
+
     var audio = document.getElementById("audio");
     window.setTimeout(function () {
         audio.src = "audio/山有木兮-橙光.mp3";
         audio.loop = "loop";
-        audio.onloadedmetadata = function () {
+        audio.onplay = function () {
             audio.play();
+        }
+        audio.onplaying = function () {
+            audioOpenButton = false;
         }
 
     }, 500);
 
     document.onclick = function () {
-        audio.play();;
+        if (audioOpenButton)
+        {
+            audio.play();
+        }
     }
 
     var img = document.getElementById("img");
@@ -82,6 +90,8 @@
         main();
     }
 
+    var loopTranslate = false;
+
     function main () {
 
         window.setInterval(function () {
@@ -94,15 +104,23 @@
             $(img).css(x, "0px");
             $(img).css(y, "0px");
 
+
+            loopTranslate = true;
+
             $(img).fadeIn(4000);
-            $(img).fadeOut(4000);
+            $(img).fadeOut(4000, function () {
+                loopTranslate = false;
+            });
 
             var i = 0;
             var translate = function () {
                 i += 2;
                 $(img).css(x,  (i/2)+"px");
                 $(img).css(y, i + "px");
-                setTimeout(translate, 5);
+                if (loopTranslate)
+                {
+                    setTimeout(translate, 5);
+                }
             };
             setTimeout(translate, 5);
 
