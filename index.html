@@ -28,11 +28,13 @@
     您的浏览器不支持 audio 标签。
 </audio>
 <div id="content" style="position:absolute;top: 35%;width: 100%;height: 30%;z-index: 1000;color: #f2ff9e;text-align: center;display: none;">
-
 </div>
+<img id="img" style="position:absolute;width: 200px;height: 200px;z-index: 2000;display: none;">
 
 </body>
 <script>
+
+    var img = document.getElementById("img");
 
     var audio = document.getElementById("audio");
     window.setTimeout(function () {
@@ -41,10 +43,13 @@
             audio.play();
             audio.loop = "loop";
         }
+
+        img.src = "image/001.jpg";
     }, 500);
 
+
+
     var index = 0, msg = [
-        "林深时见鹿，海蓝时见鲸，梦醒时见你。",
         "我们无法忘记一个人，往往不是因为对方有多么难忘，" ,
         "而是因为我们有多么依恋和执着。" ,
         "你总躲在角落里哭，又总站在阳光下笑，所以没人知道你也会难过。",
@@ -63,6 +68,27 @@
         $("#content").fadeIn(4000);
         $("#content").fadeOut(4000);
 
+        if (index == 6)
+        {
+            var i = 0;
+
+            $(img).css("left", i + "px");
+            $(img).css("top", i + "px");
+
+            $(img).fadeIn(4000);
+
+            var translate = function () {
+                i += 5;
+                $(img).css("left",  i+"px");
+                $(img).css("top", (i/2) + "px");
+                setTimeout(translate, 5);
+            };
+
+            setTimeout(translate, 5);
+
+            $(img).fadeOut(4000);
+        }
+
         index ++;
         if (index == msg.length)
         {
@@ -73,5 +99,6 @@
 
 
 </script>
+
 
 </html>
