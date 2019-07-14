@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>旅客</title>
+
+    <style>
+        html, body {
+            background: black;
+            padding:0;
+            margin:0;
+        }
+    </style>
+    <script src='js/jquery-1.9.1.js'></script>
+    <script src='js/math.aux.js'></script>
+    <script src='js/simplex-noise.min.js'></script>
+    <script src="js/index.js"></script>
+</head>
+
+<body>
+
+
+
+
+<audio id="audio">
+    您的浏览器不支持 audio 标签。
+</audio>
+<div id="content" style="position:absolute;top: 35%;width: 100%;height: 30%;z-index: 1000;color: #f2ff9e;
+    text-align: center;display: none;font-size: 14px;">
+</div>
+<img id="img" style="position:absolute;width: 80px;height: 100px;z-index: 900;display: none;">
+
+</body>
+<script>
+
+    var audio = document.getElementById("audio");
+    window.setTimeout(function () {
+        audio.src = "audio/山有木兮-橙光.mp3";
+        audio.loop = "loop";
+        audio.onloadedmetadata = function () {
+            audio.play();
+        }
+
+    }, 500);
+
+    document.onclick = function () {
+        audio.play();;
+    }
+
+    var img = document.getElementById("img");
+
+    var textIndex = 0, textList = [
+        "我们无法忘记一个人，往往不是因为对方有多么难忘，" ,
+        "而是因为我们有多么依恋和执着。" ,
+        "你总躲在角落里哭，又总站在阳光下笑，所以没人知道你也会难过。",
+        "人生最美的是过程，最难的是相知，最苦的是等待，" ,
+        "最幸福的是真爱，最后悔的是错过。" ,
+        "你没有必要刻意去追逐幸福，只要你抬起头往前走，幸福就会一直跟着你。",
+        "学会驾驭自己的生活，即使困难重重，也要满怀信心的向前。" ,
+        "不自怜不自卑不哀怨，一日一日过，一步一步走，" ,
+        "那份柳暗花明的喜乐和必然的抵达，在于我们自己的修持。"
+    ];
+
+    var imgIndex = 0, x="left", y="top", imgList = [
+        "image/01.jpg",
+        "image/02.jpg",
+        "image/03.jpg",
+        "image/04.jpg",
+        "image/05.jpg",
+        "image/06.jpg",
+        "image/07.jpg",
+        "image/08.jpg",
+        "image/09.jpg"
+    ];
+
+    var flag = prompt("千年等待，只为君开，阁下是？");
+    if (flag = "彭娇梅")
+    {
+        main();
+    }
+
+    function main () {
+
+        window.setInterval(function () {
+
+            $("#content").html(textList[textIndex]);
+            $("#content").fadeIn(4000);
+            $("#content").fadeOut(4000);
+
+            img.src = imgList[imgIndex];
+            $(img).css(x, "0px");
+            $(img).css(y, "0px");
+
+            $(img).fadeIn(4000);
+            $(img).fadeOut(4000);
+
+            var i = 0;
+            var translate = function () {
+                i += 2;
+                $(img).css(x,  (i/2)+"px");
+                $(img).css(y, i + "px");
+                setTimeout(translate, 5);
+            };
+            setTimeout(translate, 5);
+
+            imgIndex ++;
+            if (imgIndex == imgList.length) imgIndex = 0;
+
+            textIndex ++;
+            if (textIndex == textList.length) textIndex = 0;
+
+        }, 8500);
+    }
+
+
+
+</script>
+
+
+</html>
