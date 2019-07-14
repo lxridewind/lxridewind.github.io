@@ -90,6 +90,8 @@
         main();
     }
 
+    var loopTranslate;
+
     function main () {
 
         window.setInterval(function () {
@@ -106,7 +108,7 @@
             $(img).fadeIn(4000);
 
             var i = 0;
-            var loopTranslate = window.setInterval(function () {
+            loopTranslate = window.setInterval(function () {
 
                 i += 2;
                 $(img).css(x,  (i/2)+"px");
