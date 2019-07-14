@@ -5,7 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>列子御风而行</title>
+    <title>旅客</title>
 
     <style>
         html, body {
@@ -90,8 +90,6 @@
         main();
     }
 
-    var loopTranslate = false;
-
     function main () {
 
         window.setInterval(function () {
@@ -105,24 +103,21 @@
             $(img).css(y, "0px");
 
 
-            loopTranslate = true;
-
             $(img).fadeIn(4000);
-            $(img).fadeOut(4000, function () {
-                loopTranslate = false;
-            });
 
             var i = 0;
-            var translate = function () {
+            var loopTranslate = window.setInterval(function () {
+
                 i += 2;
                 $(img).css(x,  (i/2)+"px");
                 $(img).css(y, i + "px");
-                if (loopTranslate)
-                {
-                    setTimeout(translate, 5);
-                }
-            };
-            setTimeout(translate, 5);
+
+            }, 10);
+
+            $(img).fadeOut(4000, function () {
+                window.clearInterval(loopTranslate);
+
+            });
 
             imgIndex ++;
             if (imgIndex == imgList.length) imgIndex = 0;
