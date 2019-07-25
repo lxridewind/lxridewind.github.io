@@ -36,30 +36,8 @@
 </body>
 <script>
 
-    var audioOpenButton = true;
-
     var audio = document.getElementById("audio");
-    window.setTimeout(function () {
-        audio.src = "audio/山有木兮-橙光.mp3";
-        audio.loop = "loop";
-	$(audio).css("position","absolute");
-	$(audio).css("z-index","1000");
-	$(audio).css("height","20px");
-        audio.onplay = function () {
-            audio.play();
-        }
-        audio.onplaying = function () {
-            audioOpenButton = false;
-        }
-
-    }, 500);
-
-    document.onclick = function () {
-        if (audioOpenButton)
-        {
-            audio.play();
-        }
-    }
+    audio.src = "audio/山有木兮-橙光.mp3";
 
     var img = document.getElementById("img");
 
@@ -85,10 +63,10 @@
         "image/07.jpg",
         "image/08.jpg",
         "image/09.jpg",
-	"image/10.jpg",
-	"image/11.jpg",
-	"image/12.jpg",
-	"image/13.jpg"
+        "image/10.jpg",
+        "image/11.jpg",
+        "image/12.jpg",
+        "image/13.jpg"
     ];
 
     var flag = prompt("千年等待，只为君开，阁下是？");
@@ -99,41 +77,57 @@
 
     var loopTranslate;
 
+    function imgAndTextLoop () {
+
+        // 文本淡入淡出
+        $("#content").html(textList[textIndex]);
+        $("#content").fadeIn(4000);
+        $("#content").fadeOut(4000);
+
+        // 文本序号
+        textIndex ++;
+        if (textIndex == textList.length) textIndex = 0;
+
+
+        // 图片淡入
+        img.src = imgList[imgIndex];
+        $(img).css(x, "0px");
+        $(img).css(y, "0px");
+        $(img).fadeIn(4000);
+
+        // 图片移动
+        var i = 0;
+        loopTranslate = window.setInterval(function () {
+            i += 2;
+            $(img).css(x,  (i/2)+"px");
+            $(img).css(y, i + "px");
+        }, 10);
+
+        // 图片淡出
+        $(img).fadeOut(4000, function () {
+            window.clearInterval(loopTranslate);
+
+            imgAndTextLoop();
+        });
+
+        imgIndex ++;
+        if (imgIndex == imgList.length) imgIndex = 0;
+    }
+    
     function main () {
 
-        window.setInterval(function () {
+        window.setTimeout(function () {
+            audio.loop = "loop";
+            $(audio).css("position","absolute");
+            $(audio).css("z-index","1000");
+            $(audio).css("height","20px");
+            audio.play();
+            audio.onplay = function () {
+                audio.play();
+            }
+        }, 500);
 
-            $("#content").html(textList[textIndex]);
-            $("#content").fadeIn(4000);
-            $("#content").fadeOut(4000);
-
-            img.src = imgList[imgIndex];
-            $(img).css(x, "0px");
-            $(img).css(y, "0px");
-
-
-            $(img).fadeIn(4000);
-
-            var i = 0;
-            loopTranslate = window.setInterval(function () {
-                i += 2;
-                $(img).css(x,  (i/2)+"px");
-                $(img).css(y, i + "px");
-
-            }, 10);
-
-            $(img).fadeOut(4000, function () {
-                window.clearInterval(loopTranslate);
-
-            });
-
-            imgIndex ++;
-            if (imgIndex == imgList.length) imgIndex = 0;
-
-            textIndex ++;
-            if (textIndex == textList.length) textIndex = 0;
-
-        }, 8500);
+        imgAndTextLoop();
     }
 
 
