@@ -41,13 +41,13 @@
             border-radius: 10px;
         }
 
-        #img
+        .img
         {
             position:absolute;
             width: 80px;
             height: 100px;
             z-index: 900;
-            display: none;
+            left: -100px;
         }
 
         #content
@@ -79,19 +79,14 @@
     <audio id="audio" controls>您的浏览器不支持 audio 标签。</audio>
 </div>
 
-
-<img id="img" >
-
 <div id="content"></div>
 
 </body>
 <script>
 
     var audio = document.getElementById("audio");
-   //  audio.src = "audio/山有木兮-橙光.mp3";
-   audio.src = "audio/渡我不渡她.mp3";
-
-    var img = document.getElementById("img");
+//    audio.src = "audio/shanyoumuxi.mp3";
+    audio.src = "audio/duwobuduta.mp3";
 
     var textIndex = 0, textList = [
         "我们无法忘记一个人，往往不是因为对方有多么难忘，" ,
@@ -105,7 +100,7 @@
         "那份柳暗花明的喜乐和必然的抵达，在于我们自己的修持。"
     ];
 
-    var imgIndex = 0, x="left", y="top", imgList = [
+    var imgIndex = 0, imgList = [
         "image/01.jpg",
         "image/02.jpg",
         "image/03.jpg",
@@ -129,54 +124,59 @@
 
     var loopTranslate;
 
-    function imgAndTextLoop () {
+    function imgLoop () {
 
-        // 文本淡入淡出
-        $("#content").html(textList[textIndex]);
-        $("#content").fadeIn(4000);
-        $("#content").fadeOut(4000);
-
-        // 文本序号
-        textIndex ++;
-        if (textIndex == textList.length) textIndex = 0;
-
-
-        // 图片淡入
-        img.src = imgList[imgIndex];
-        $(img).css(x, "0px");
-        $(img).css(y, "0px");
-        $(img).fadeIn(4000);
+        var img = document.getElementById("img"+imgIndex);
+        $(img).css("left", "-80px");
+        $(img).css("top", "-100px");
 
         // 图片移动
         var i = 0;
         loopTranslate = window.setInterval(function () {
             i += 1;
-            $(img).css(x,  (i/2)+"px");
-            $(img).css(y, i + "px");
+            $(img).css("left",  (i/2)+"px");
+            $(img).css("top", i + "px");
+
+            var right = window.parseInt($(img).css("right"));
+            if (right < -80)
+            {
+                window.clearInterval(loopTranslate);
+                imgLoop();
+            }
         }, 10);
-
-        // 图片淡出
-        $(img).fadeOut(4000, function () {
-            window.clearInterval(loopTranslate);
-
-            imgAndTextLoop();
-        });
 
         imgIndex ++;
         if (imgIndex == imgList.length) imgIndex = 0;
     }
     
+    function textLoop () {
+        // 文本淡入淡出
+        $("#content").html(textList[textIndex]);
+        $("#content").fadeIn(4000);
+        $("#content").fadeOut(4000, function () {
+            textLoop();
+        });
+
+        // 文本序号
+        textIndex ++;
+        if (textIndex == textList.length) textIndex = 0;
+    }
+    
     function main () {
+
+        $(imgList).each(function (index, srcPath) {
+            $("body").append('<img class="img" id="img'+index+'" src="'+srcPath+'">');
+        });
 
         window.setTimeout(function () {
             audio.loop = "loop";
             audio.play();
         }, 1500);
 
-        imgAndTextLoop();
+        imgLoop ();
+
+        textLoop ();
     }
-
-
 
 </script>
 
